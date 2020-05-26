@@ -1,10 +1,13 @@
 import React from 'react';
 
 
-const Person = ({ person }) => {
+const Person = ({ personDelete, fullName, personEdit }) => {
     return (
-        <p>{`${person.name} ${person.lname}`}</p>
+        <div style={{ cursor: "pointer" }} >
+            <p >{`${fullName}`}</p>
+            <input type="text" placeholder={fullName} onChange={personEdit} />
+            <button onClick={personDelete}>حذف</button>
+        </div>
     );
 }
-
 export default Person;

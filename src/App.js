@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import Persons from './Component/Person/Persons';
-
-import './App.css'
 import { toast, ToastContainer } from 'react-toastify';
+
 import Header from './Component/common/Header';
 import SimpleContext from './Component/Context/SimpleContext';
 import CreatePerson from './Component/Person/NewPerson';
@@ -32,11 +31,7 @@ const App = () => {
         const personsIndex = persons.findIndex(n => n.id === id)
         persons[personsIndex].fullName = event.target.value
         setPersons(persons)
-        // روش دوم
-        // مشکل دارد عدم دسترسی به Index 
-        // persons[id].fullName = event.target.value
-
-        //روش سوم 
+        //روش دوم 
         // const { persons: allPersons } = this.state
         // const personIndex = allPersons.findIndex(p => p.id === id)
         // const person = allPersons[personIndex]
@@ -69,9 +64,7 @@ const App = () => {
     const setPerson = (event) => {
         setSinglePerson(event.target.value)
     }
-
-
-    const value = {
+    const contextValue = {
         persons: getPersons,
         person: getSinglePerson,
         handleChangePerson: handleChangePerson,
@@ -82,7 +75,7 @@ const App = () => {
     let showPersons = null
     if (getShowPerson) showPersons = <Persons />
     return (
-        <SimpleContext.Provider value={value} >
+        <SimpleContext.Provider value={contextValue} >
             <div className="text-center rtl">
                 <ToastContainer />
                 <Header appTitle="مدیریت اشخاص" />

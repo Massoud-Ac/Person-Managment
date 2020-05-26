@@ -1,7 +1,6 @@
 import React, { Fragment, useContext } from 'react';
 import SimpleContext from '../Context/SimpleContext';
 
-
 const Header = ({ appTitle }) => {
     const context = useContext(SimpleContext)
     const { persons } = context

@@ -4,7 +4,6 @@ import SimpleContext from '../Context/SimpleContext';
 
 const Persons = () => {
     const context = useContext(SimpleContext)
-    console.log(context)
     return (
         <div>
             {context.persons.map(person =>

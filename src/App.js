@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
-import Persons from './Component/Persons';
+import Persons from './Component/Person/Persons';
 
 import './App.css'
 import { toast, ToastContainer } from 'react-toastify';
+import Header from './Component/common/Header';
+import SimpleContext from './Component/Context/SimpleContext';
+import CreatePerson from './Component/Person/NewPerson';
 
 class App extends Component {
     state = {
         persons: [],
         person: "",
-        showPerson: false
+        showPerson: false,
+        appTitle: "مدیریت کننده اشخاص"
 
     }
     handleShowPerson = () => {
@@ -18,7 +22,10 @@ class App extends Component {
         const persons = [...this.state.persons];
         const filteredPerson = persons.filter(n => n.id !== id);
         this.setState({ persons: filteredPerson });
-        toast.warning("شخص با موفقیت حذف گردید")
+        toast.warning("شخص با موفقیت حذف گردید", {
+            autoClose: 1500,
+            closeOnClick: true
+        })
     }
     handleChangePerson = (event, id) => {
         const { persons } = this.state
@@ -60,38 +67,33 @@ class App extends Component {
     }
     render() {
         const { persons, showPerson } = this.state
-        let person = null
-        if (showPerson) person = <Persons persons={persons}
+        const value = {
+            state: this.state,
+            handleChangePerson: this.handleChangePerson,
+            handleCreatePerson: this.handleCreatePerson,
+            handleDeletePerson: this.handleDeletePerson,
+            setPerson: this.setPerson,
+        }
+        let showPersons = null
+        if (showPerson) showPersons = <Persons persons={persons}
             personDelete={this.handleDeletePerson}
             personEdit={this.handleChangePerson} />
-        let badgeStyle = ""
-        if (persons.length < 2) badgeStyle = 'badge-danger'
-        if (persons.length >= 2 && persons.length <= 4) badgeStyle = 'badge-warning'
-        if (persons.length > 4) badgeStyle = 'badge-success'
         return (
-            <div className="text-center rtl">
-                <ToastContainer />
-                <div className="alert alert-warning">
-                    <h3>مدیریت کننده اشخاص</h3>
+            <SimpleContext.Provider value={value} >
+                <div className="text-center rtl">
+                    <ToastContainer />
+                    <Header
+                        count={persons.length}
+                    />
+                    <CreatePerson
+                        // createPerson={this.handleCreatePerson}
+                        // setPerson={this.setPerson}
+                        // person={person}
+                    />
+                    <button className={showPerson ? "btn btn-danger" : "btn btn-info"} onClick={this.handleShowPerson}>{showPerson ? "عدم نمایش " : "نمایش"}</button>
+                    {showPersons}
                 </div>
-                <h5 className="alert alert-light">تعداد اشخاص <span className={`badge badge-pill ${badgeStyle}`}> {persons.length}</span></h5>
-                <div className="m-2 p-2">
-                    <form className="form-inline justify-content-center" onSubmit={this.handleCreatePerson}>
-                        <div className="input-group w-25">
-                            <input type="text" className="form-control"
-                                onChange={this.setPerson}
-                                value={this.state.person}
-                            />
-                            <div className="input-group-prepend">
-                                <button className="btn btn-success btn-sm fa fa-plus-square" type="submit" />
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <button className={showPerson ? "btn btn-danger" : "btn btn-info"} onClick={this.handleShowPerson}>{showPerson ? "عدم نمایش " : "نمایش"}</button>
-                {person}
-
-            </div>
+            </SimpleContext.Provider>
         );
     }
 }

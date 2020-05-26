@@ -13,7 +13,6 @@ class App extends Component {
         person: "",
         showPerson: false,
         appTitle: "مدیریت کننده اشخاص"
-
     }
     handleShowPerson = () => {
         this.setState({ showPerson: !this.state.showPerson })
@@ -75,21 +74,13 @@ class App extends Component {
             setPerson: this.setPerson,
         }
         let showPersons = null
-        if (showPerson) showPersons = <Persons persons={persons}
-            personDelete={this.handleDeletePerson}
-            personEdit={this.handleChangePerson} />
+        if (showPerson) showPersons = <Persons />
         return (
             <SimpleContext.Provider value={value} >
                 <div className="text-center rtl">
                     <ToastContainer />
-                    <Header
-                        count={persons.length}
-                    />
-                    <CreatePerson
-                        // createPerson={this.handleCreatePerson}
-                        // setPerson={this.setPerson}
-                        // person={person}
-                    />
+                    <Header />
+                    <CreatePerson />
                     <button className={showPerson ? "btn btn-danger" : "btn btn-info"} onClick={this.handleShowPerson}>{showPerson ? "عدم نمایش " : "نمایش"}</button>
                     {showPersons}
                 </div>
@@ -97,5 +88,4 @@ class App extends Component {
         );
     }
 }
-
 export default App;

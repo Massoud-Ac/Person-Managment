@@ -3,15 +3,17 @@ import Person from './Person';
 import SimpleContext from '../Context/SimpleContext';
 
 const Persons = () => {
-    const {state,handleDeletePerson,handleChangePerson} = useContext(SimpleContext)
+    const context = useContext(SimpleContext)
+    console.log(context)
     return (
         <div>
-            {state.persons.map(person =>
+            {context.persons.map(person =>
                 <Person
                     key={person.id}
-                    personDelete={() => handleDeletePerson(person.id)}
-                    personEdit={(event) => handleChangePerson(event, person.id)}
                     fullName={person.fullName}
+                    personDelete={() => context.handleDeletePerson(person.id)}
+                    personEdit={event => context.handleChangePerson(event, person.id)}
+
                 />)}
         </div>
     )

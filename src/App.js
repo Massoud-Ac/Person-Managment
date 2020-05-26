@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Persons from './Component/Person/Persons';
 
 import './App.css'
@@ -7,34 +7,35 @@ import Header from './Component/common/Header';
 import SimpleContext from './Component/Context/SimpleContext';
 import CreatePerson from './Component/Person/NewPerson';
 
-class App extends Component {
-    state = {
-        persons: [],
-        person: "",
-        showPerson: false,
-        appTitle: "مدیریت کننده اشخاص"
+
+
+const App = () => {
+    const [getPersons, setPersons] = useState([])
+    const [getSinglePerson, setSinglePerson] = useState("")
+    const [getShowPerson, setShowPerson] = useState(true)
+
+    const handleShowPerson = () => {
+        setShowPerson(!getShowPerson)
     }
-    handleShowPerson = () => {
-        this.setState({ showPerson: !this.state.showPerson })
-    }
-    handleDeletePerson = id => {
-        const persons = [...this.state.persons];
+    const handleDeletePerson = id => {
+        const persons = [...getPersons];
         const filteredPerson = persons.filter(n => n.id !== id);
-        this.setState({ persons: filteredPerson });
+        setPersons(filteredPerson);
         toast.warning("شخص با موفقیت حذف گردید", {
             autoClose: 1500,
             closeOnClick: true
         })
     }
-    handleChangePerson = (event, id) => {
-        const { persons } = this.state
+    const handleChangePerson = (event, id) => {
+        const persons = [...getPersons]
         // روش اول
         const personsIndex = persons.findIndex(n => n.id === id)
         persons[personsIndex].fullName = event.target.value
+        setPersons(persons)
         // روش دوم
         // مشکل دارد عدم دسترسی به Index 
         // persons[id].fullName = event.target.value
-        this.setState({ persons })
+
         //روش سوم 
         // const { persons: allPersons } = this.state
         // const personIndex = allPersons.findIndex(p => p.id === id)
@@ -43,49 +44,54 @@ class App extends Component {
         // const persons = [...allPersons]
         // persons[personIndex] = person
     }
-    handleCreatePerson = (event) => {
+    const handleCreatePerson = (event) => {
         event.preventDefault()
-        const persons = [...this.state.persons]
+        const persons = [...getPersons]
         const person = {
             id: Math.floor(Math.random() * 1000),
-            fullName: this.state.person
+            fullName: getSinglePerson
         }
         if (person.fullName !== "" && person.fullName !== " ") {
             persons.push(person)
-            this.setState({ persons, person: "" })
+            setPersons(persons)
+            setSinglePerson("")
             toast.success("شخص با موفقیت ثبت گردید", {
                 autoClose: 1500,
                 closeOnClick: true
             })
         } else {
-            toast.error("لطفا اطلاعات اجباری را وارد کنید")
+            toast.error("لطفا اطلاعات اجباری را وارد کنید", {
+                autoClose: 1500,
+                closeOnClick: true
+            })
         }
     }
-    setPerson = (event) => {
-        this.setState({ person: event.target.value })
+    const setPerson = (event) => {
+        setSinglePerson(event.target.value)
     }
-    render() {
-        const { persons, showPerson } = this.state
-        const value = {
-            state: this.state,
-            handleChangePerson: this.handleChangePerson,
-            handleCreatePerson: this.handleCreatePerson,
-            handleDeletePerson: this.handleDeletePerson,
-            setPerson: this.setPerson,
-        }
-        let showPersons = null
-        if (showPerson) showPersons = <Persons />
-        return (
-            <SimpleContext.Provider value={value} >
-                <div className="text-center rtl">
-                    <ToastContainer />
-                    <Header />
-                    <CreatePerson />
-                    <button className={showPerson ? "btn btn-danger" : "btn btn-info"} onClick={this.handleShowPerson}>{showPerson ? "عدم نمایش " : "نمایش"}</button>
-                    {showPersons}
-                </div>
-            </SimpleContext.Provider>
-        );
+
+
+    const value = {
+        persons: getPersons,
+        person: getSinglePerson,
+        handleChangePerson: handleChangePerson,
+        handleCreatePerson: handleCreatePerson,
+        handleDeletePerson: handleDeletePerson,
+        setPerson: setPerson,
     }
+    let showPersons = null
+    if (getShowPerson) showPersons = <Persons />
+    return (
+        <SimpleContext.Provider value={value} >
+            <div className="text-center rtl">
+                <ToastContainer />
+                <Header appTitle="مدیریت اشخاص" />
+                <CreatePerson />
+                <button className={getShowPerson ? "btn btn-danger" : "btn btn-info"} onClick={handleShowPerson}>{getShowPerson ? "عدم نمایش " : "نمایش"}</button>
+                {showPersons}
+            </div>
+        </SimpleContext.Provider>
+    );
 }
+
 export default App;

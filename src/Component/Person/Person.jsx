@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 const Person = ({ personDelete, fullName, personEdit }) => {
     return (
         <div className="card text-white bg-info mb-3 mt-3 w-25 mx-auto">

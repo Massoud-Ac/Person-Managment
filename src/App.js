@@ -3,8 +3,9 @@ import Persons from './Component/Person/Persons';
 import { toast, ToastContainer } from 'react-toastify';
 
 import Header from './Component/common/Header';
-import SimpleContext from './Component/Context/SimpleContext';
+import PersonContext from './Component/Context/SimpleContext'
 import CreatePerson from './Component/Person/NewPerson';
+
 
 class App extends Component {
     constructor(props) {
@@ -12,7 +13,8 @@ class App extends Component {
         this.state = {
             persons: [],
             person: "",
-            toggleShowbtn: false
+            toggleShowbtn: false,
+            appTitle: "مدیریت اشخاص"
         }
     }
     handleShowPerson = () => {
@@ -48,10 +50,9 @@ class App extends Component {
             id: Math.floor(Math.random() * 1000),
             fullName: this.state.person
         }
-        debugger
         if (person.fullName !== "" && person.fullName !== " ") {
             persons.push(person)
-            this.setState({ person: "" , persons })
+            this.setState({ person: "", persons })
             toast.success("شخص با موفقیت ثبت گردید", {
                 autoClose: 1500,
                 closeOnClick: true
@@ -63,6 +64,15 @@ class App extends Component {
             })
         }
     }
+    getContext = () => {
+        return {
+            state: this.state,
+            handleChangePerson: this.handleChangePerson,
+            handleDeletePerson: this.handleDeletePerson,
+            setPerson: this.setPerson,
+            handleCreatePerson: this.handleCreatePerson
+        }
+    }
     setPerson = (event) => {
         this.setState({ person: event.target.value })
     }
@@ -72,22 +82,24 @@ class App extends Component {
         if (toggleShowbtn) {
             debugger
             showPerson = <Persons
-                persons={persons}
-                handleChangePerson={this.handleChangePerson}
-                handleDeletePerson={this.handleDeletePerson}
+                // persons={persons}
+                // handleChangePerson={this.handleChangePerson}
+                // handleDeletePerson={this.handleDeletePerson}
             />
         }
         return (
-            <div className="text-center rtl">
-                <ToastContainer />
-                <Header persons={persons} appTitle="مدیریت اشخاص" />
-                <CreatePerson
-                    handleCreatePerson={this.handleCreatePerson}
-                    setPerson={this.setPerson}
-                    person={person} />
-                <button className={toggleShowbtn ? "btn btn-danger" : "btn btn-info"} onClick={this.handleShowPerson}>{toggleShowbtn ? "عدم نمایش " : "نمایش"}</button>
-                {showPerson}
-            </div>
+            <PersonContext.Provider value={this.getContext()}>
+                <div className="text-center rtl">
+                    <ToastContainer />
+                    <Header />
+                    <CreatePerson
+                        handleCreatePerson={this.handleCreatePerson}
+                        setPerson={this.setPerson}
+                        person={person} />
+                    <button className={toggleShowbtn ? "btn btn-danger" : "btn btn-info"} onClick={this.handleShowPerson}>{toggleShowbtn ? "عدم نمایش " : "نمایش"}</button>
+                    {showPerson}
+                </div>
+            </PersonContext.Provider>
         );
     }
 }

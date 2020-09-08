@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
 import Person from './Person';
-import SimpleContext from '../Context/SimpleContext';
+import PersonContext from '../Context/SimpleContext';
 
-const Persons = ({persons , handleDeletePerson , handleChangePerson}) => {
+const Persons = () => {
+    const {handleChangePerson,handleDeletePerson,state} = useContext(PersonContext)
     return (
         <div>
-            {persons.map(person =>
+            {state.persons.map(person =>
                 <Person
                     key={person.id}
                     fullName={person.fullName}

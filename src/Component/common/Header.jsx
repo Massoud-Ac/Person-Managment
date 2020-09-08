@@ -1,7 +1,9 @@
 import React, { Fragment, useContext } from 'react';
-import SimpleContext from '../Context/SimpleContext';
+import PersonContext from '../Context/SimpleContext';
 
-const Header = ({ appTitle , persons }) => {
+const Header = () => {
+    const { state } = useContext(PersonContext);
+    const { appTitle, persons } = state
     let badgeStyle = ""
     if (persons.length < 2) badgeStyle = 'badge-danger'
     if (persons.length >= 2 && persons.length <= 4) badgeStyle = 'badge-warning'

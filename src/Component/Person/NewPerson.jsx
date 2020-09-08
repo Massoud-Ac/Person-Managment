@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
 import SimpleContext from '../Context/SimpleContext';
 
-const CreatePerson = () => {
-    const context = useContext(SimpleContext)
-    const { handleCreatePerson, setPerson ,person } = context
+const CreatePerson = ({ handleCreatePerson, person, setPerson }) => {
     return (
         <div className="m-2 p-2">
             <form className="form-inline justify-content-center" onSubmit={(event) => handleCreatePerson(event)}>

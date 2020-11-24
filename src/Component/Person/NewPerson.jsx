@@ -1,21 +1,28 @@
-import React, { useContext } from 'react';
-import SimpleContext from '../Context/SimpleContext';
+import React, { useContext } from 'react'
+import SimpleContext from '../../Context/context'
 
-const CreatePerson = ({ handleCreatePerson, person, setPerson }) => {
+const NewPerson = () => {
+    const context = useContext(SimpleContext)
+    debugger
     return (
         <div className="m-2 p-2">
-            <form className="form-inline justify-content-center" onSubmit={(event) => handleCreatePerson(event)}>
+            <form
+                className="form-inline justify-content-center"
+                onSubmit={event => event.preventDefault()}>
                 <div className="input-group w-25">
-                    <input type="text" className="form-control"
-                        onChange={(event) => setPerson(event)}
-                        value={person}
-                    />
+                    <input
+                        className="form-control"
+                        placeholder="اسم وارد کنید"
+                        value={context.person}
+                        onChange={(event) => context.setPerson(event)} />
                     <div className="input-group-prepend">
-                        <button className="btn btn-success btn-sm fa fa-plus-square" type="submit" />
+                        <button
+                            className="btn btn-success btn-sm fa fa-plus-square"
+                            onClick={context.handleNewPerson} />
                     </div>
                 </div>
             </form>
         </div>
-    );
+    )
 }
-export default CreatePerson;
+export default NewPerson

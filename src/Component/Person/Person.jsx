@@ -1,19 +1,22 @@
-import React from 'react';
+import React from 'react'
 
-const Person = ({ personDelete, fullName, personEdit }) => {
-    debugger
+const Person = ({ person, deletePerson, updatePerson }) => {
     return (
-        <div className="card text-white bg-info mb-3 mt-3 w-25 mx-auto">
+        <div className="card bg-info text-white w-25 mx-auto mb-3 mt-3">
             <div className="card-body text-center">
-                <p className="d-block">{`${fullName}`}</p>
+                <p className="d-block">{`${person.fullName}`}</p>
                 <div className="input-group justify-content-center">
-                    <input type="text" className="form-control w-50" placeholder={fullName} onChange={personEdit} />
+                    <input className="w-50 form-control"
+                        placeholder={[person.fullName]}
+                        onChange={updatePerson} />
                     <div className="input-group-prepend">
-                        <button className="btn btn-danger fa fa-trash btn-sm" onClick={personDelete}></button>
+                        <button className="btn btn-danger fa fa-trash"
+                            onClick={deletePerson} />
                     </div>
                 </div>
             </div>
+
         </div>
-    );
+    )
 }
-export default Person;
+export default Person
